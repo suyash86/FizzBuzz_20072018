@@ -1,0 +1,53 @@
+﻿@model FizzBuzz.Models.FizzBuzzModel
+@using PagedList
+@using PagedList.Mvc
+
+@{
+    ViewBag.Title = "Fizz-Buzz";
+}
+
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+
+<h2>
+    Fizz-Buzz Test
+</h2>
+
+@using (Html.BeginForm("Display", "FizzBuzz", new {page = 1, Model.EnterNumber}))
+{
+    <div class="editor-label">
+        <table>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.EnterNumber)
+                </td>
+                <td>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(m => m.EnterNumber)
+                        @Html.ValidationMessageFor(m => m.EnterNumber)
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" value="Display"/>
+                </td>
+            </tr>
+        </table>
+    </div>
+}
+
+@{
+    if(Model !=null && Model.FizzBuzzValues !=null)
+    {
+        foreach (var element in Model.FizzBuzzValues) 
+        { 
+            @StyleHelper.TextDisplay(element)
+            <br />              
+        }
+        
+        <div class="pagedList">
+            @Html.PagedListPager(Model.FizzBuzzValues, page => Url.Action("Display", new {page = page, Model.EnterNumber}), PagedListRenderOptions.TwitterBootstrapPager) 
+        </div>    
+    }    
+}
+
